@@ -2,3 +2,12 @@
 .DS_Store
 videojuegos/t11.explodeGloves_v1.py
 .gitignore
+videojuegos/2048-pygame/*
+videojuegos/video-juegos.txt
+videojuegos/books/RetroGaming/*
+videojuegos/books/Code_the_classics/*
+videojuegos/pong/bin/*
+videojuegos/pong/include/*
+videojuegos/pong/lib/*
+videojuegos/pong/pyvenv.cfg
+app/Filex_v1.3.zip

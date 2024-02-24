@@ -21,7 +21,7 @@ import os
 v = "1.3"
 
 _width = 1400
-_height = 800
+_height = 500
 
 numero_imagen = 0
 lista_imagenes = []
@@ -54,7 +54,7 @@ def update_theme():
     filexapp.bg = "white"
     filexapp.text_color = "black"
 
-valid_extensions = ('.gif','.jpg','.png','.jpeg')
+valid_extensions = ('.gif','.jpg','.png','.jpeg','.bmp','.ico','.tif')
 # recargamos la lista de imágenes
 def update_images():
     global lista_imagenes, numero_imagen # usamos la variable lista_imagenes como global
@@ -76,6 +76,11 @@ def update():
 # actualizar la imagen que se muestra
 def show_image():     
     global lista_imagenes, numero_imagen # usamos la variable lista_imagenes como global
+    if len(lista_imagenes) == 0:
+        print('No hay imágenes')
+        filexapp.warn('Aviso: No files', 'No hay imágenes')
+        return
+
     try:
         vsimg.image = directory.value + "/" + lista_imagenes[numero_imagen]
         textImagenName.value = lista_imagenes[numero_imagen]
@@ -166,7 +171,7 @@ separador3 = Text(boxBotonera, text=separadorStr,  align="right" )
 
 boxImagen = Box(filexapp,height='fill',width='fill')
 
-vsimg = Picture(boxImagen, width=700, height=700, align="top")
+vsimg = Picture(boxImagen, width=_height-100, height=_height-100, align="top")
 
 boxBotoneraImagen = Box(filexapp,align="bottom")
 
@@ -183,14 +188,15 @@ separador4 = Text(boxBotoneraImagen, text=separadorStr,  align="right")
 
 # Actualizamos el aspecto
 update_theme()
+
 boxBotonera.bg = 'blue' # DEBUG para zona box
 boxBotoneraImagen.bg = "green" # DEBUG para zona box
 boxImagen.bg='red' # DEBUG para zona box
+
+
 update_images() # recargamos la lista de imágenes
 show_image()
     
-
-
 #end
 ###############################################
 filexapp.display()
