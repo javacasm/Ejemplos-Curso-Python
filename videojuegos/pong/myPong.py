@@ -5,7 +5,7 @@ from pygame import *
 from random import randint
 from time import sleep
 
-v = 0.9
+v = 1.0
 
 # paleta en https://htmlcolorcodes.com/es/
 BLACK = (0,0,0)
@@ -14,14 +14,17 @@ PURPLE = (200,50,240)
 GREEN = (55,236,0)
 WHITE = (255,255,255)
 
-numero_judadores = int(input('¿número de jugadores? (0/1/2) '))
+numero_jugadores = -1
+# TODO: Pantalla gráfica de inicio: número de jugadores y sonido
+while numero_jugadores < 0 or numero_jugadores > 2:
+    numero_jugadores = int(input('¿número de jugadores? (0/1/2) '))
 
 
 init() # inicializamos pygame
 
 # inicialización
-ancho_pantalla = 640
-alto_pantalla = 480
+ancho_pantalla = 800
+alto_pantalla = 600
 
 pantalla = display.set_mode( (ancho_pantalla, alto_pantalla) )
 
@@ -34,6 +37,8 @@ velocidad_pelota_y = 0
 pelota_x = ancho_pantalla // 2
 pelota_y = alto_pantalla // 2
 
+MAX_VELOCIDAD = 150
+
 # reinicia la posición de la pelota y le da una nueva velocidad aleatoria
 def pelota_centro():
     global pelota_x, pelota_y, velocidad_pelota_x, velocidad_pelota_y
@@ -43,8 +48,8 @@ def pelota_centro():
     velocidad_pelota_x = velocidad_pelota_y = 0
 
     while velocidad_pelota_x == 0 or velocidad_pelota_y == 0:
-        velocidad_pelota_x = randint(0,5)
-        velocidad_pelota_y = randint(-5,5)    
+        velocidad_pelota_x = randint(0, MAX_VELOCIDAD)
+        velocidad_pelota_y = randint(-MAX_VELOCIDAD, MAX_VELOCIDAD)    
 
 pelota_centro()
 
@@ -95,36 +100,36 @@ while bJugando:
                 print('Nos vamos...')
                 bJugando = False
             # teclas raqueta 1 W & S
-            elif numero_judadores> 0 and evento.key == K_w:
-                velocidad_raqueta1_y = -10
-            elif numero_judadores> 0 and evento.key == K_s:
-                velocidad_raqueta1_y =  10
+            elif numero_jugadores > 0 and evento.key == K_w:
+                velocidad_raqueta1_y = -MAX_VELOCIDAD
+            elif numero_jugadores > 0 and evento.key == K_s:
+                velocidad_raqueta1_y =  MAX_VELOCIDAD
             # teclas raqueta 2 UP & DOWN
-            elif numero_judadores == 2 and evento.key == K_UP:
-                velocidad_raqueta2_y = -10
-            elif numero_judadores == 2 and evento.key == K_DOWN:
-                velocidad_raqueta2_y =  10
+            elif numero_jugadores == 2 and evento.key == K_UP:
+                velocidad_raqueta2_y = -MAX_VELOCIDAD
+            elif numero_jugadores == 2 and evento.key == K_DOWN:
+                velocidad_raqueta2_y =  MAX_VELOCIDAD
                 
         elif evento.type == KEYUP: # se ha soltado una tecla
             # reseteamos las velocidades de las raquetas
-            if numero_judadores == 2 and evento.key == K_UP or evento.key == K_DOWN :
+            if numero_jugadores == 2 and evento.key == K_UP or evento.key == K_DOWN :
                 velocidad_raqueta2_y = 0
-            elif numero_judadores> 0 and evento.key == K_w or evento.key == K_s :
+            elif numero_jugadores > 0 and evento.key == K_w or evento.key == K_s :
                 velocidad_raqueta1_y = 0
 
-    if numero_judadores < 2:
+    if numero_jugadores < 2:
         if velocidad_pelota_x > 0 and pelota_y > raqueta2_y + raqueta_alto//2:
-            velocidad_raqueta2_y = 5
+            velocidad_raqueta2_y = MAX_VELOCIDAD
         elif velocidad_pelota_x > 0 and pelota_y < raqueta2_y + raqueta_alto//2:
-            velocidad_raqueta2_y = -5
+            velocidad_raqueta2_y = -MAX_VELOCIDAD
         else :
             velocidad_raqueta2_y = 0
 
-    if numero_judadores == 0:
+    if numero_jugadores == 0:
         if velocidad_pelota_x <0 and pelota_y > raqueta1_y + raqueta_alto//2:
-            velocidad_raqueta1_y = 5
+            velocidad_raqueta1_y = MAX_VELOCIDAD
         elif velocidad_pelota_x <0 and pelota_y < raqueta1_y + raqueta_alto//2:
-            velocidad_raqueta1_y = -5
+            velocidad_raqueta1_y = -MAX_VELOCIDAD
         else :
             velocidad_raqueta1_y = 0
 
@@ -175,7 +180,7 @@ while bJugando:
         pelota_centro()
         puntos_jugador2 += 1
         print(f'Jugador 1: {puntos_jugador1} - Jugador 2: {puntos_jugador2}')
-        # TODO: mostrar puntos dibujados
+        # TODO: mostrar puntos dibujados en pantalla
         reproducir_sonido('sonido-punto.mp3')
         sleep(2)
 
