@@ -1,18 +1,12 @@
 # Name: Pong by JLCQL
 from pygame import *
 # TODO: optimizar carga del modulo
-# TODO: modo 1  jugador
 from random import randint
 from time import sleep
 
-v = 1.0
+from config import *
 
-# paleta en https://htmlcolorcodes.com/es/
-BLACK = (0,0,0)
-RED = (255,0,0)
-PURPLE = (200,50,240)
-GREEN = (55,236,0)
-WHITE = (255,255,255)
+v = 1.3
 
 numero_jugadores = -1
 # TODO: Pantalla gráfica de inicio: número de jugadores y sonido
@@ -30,14 +24,18 @@ pantalla = display.set_mode( (ancho_pantalla, alto_pantalla) )
 
 display.set_caption('Mi primer juego - Pong')
 
-
 velocidad_pelota_x = 0
 velocidad_pelota_y = 0
 
 pelota_x = ancho_pantalla // 2
 pelota_y = alto_pantalla // 2
 
-MAX_VELOCIDAD = 150
+def draw_text(surface, text, size, x, y, color, font_name = FONT_NAME):
+    fuente = font.Font(CARPETA_FUENTES + font_name, size)
+    text_surface = fuente.render(text, True, color)
+    text_rect = text_surface.get_rect()
+    text_rect.topleft = (x, y)
+    surface.blit(text_surface, text_rect)
 
 # reinicia la posición de la pelota y le da una nueva velocidad aleatoria
 def pelota_centro():
@@ -76,13 +74,13 @@ clock = time.Clock()
 # Sonido
 mixer.init()
 
-def reproducir_sonido(ruta):
-    mixer.music.load(ruta)
-    mixer.music.play()
+mute = False
 
+def reproducir_sonido(sonido):
+    if not mute: 
+        mixer.music.load(CARPETA_SONIDO + sonido)
+        mixer.music.play()
 
-
-    
 bJugando = True # se repite el bucle mientras jugamos
 
 while bJugando:
@@ -99,6 +97,10 @@ while bJugando:
             if evento.key == K_ESCAPE:
                 print('Nos vamos...')
                 bJugando = False
+            # tecla m mute sound
+            elif evento.key == K_m:
+                mute = not mute
+                print(f'Mute {mute}') #  TODO: mostar icono Mute en pantalla
             # teclas raqueta 1 W & S
             elif numero_jugadores > 0 and evento.key == K_w:
                 velocidad_raqueta1_y = -MAX_VELOCIDAD
@@ -160,52 +162,65 @@ while bJugando:
     # comprobamos rebotes de la pelota con las paredes de arriba y abajo
        
     if pelota_y < radio_pelota:
-        reproducir_sonido('boing-pared.mp3')        
+        reproducir_sonido(SONIDO_REBOTE_PARED)        
         velocidad_pelota_y = -velocidad_pelota_y
        
     if pelota_y > alto_pantalla - radio_pelota:
-        reproducir_sonido('boing-pared.mp3')
+        reproducir_sonido(SONIDO_REBOTE_PARED)
         velocidad_pelota_y = -velocidad_pelota_y
        
-
     # Detección de colisión en la izquierda
     # colision raqueta 1
     if pelota_x < raqueta_ancho + radio_pelota:
         if raqueta1_y < pelota_y < raqueta1_y + raqueta_alto: # rebota en la raqueta
             velocidad_pelota_x = -velocidad_pelota_x
-            reproducir_sonido('boing-raqueta.mp3')
-
+            reproducir_sonido(SONIDO_REBOTE_RAQUETA)
+            #esquina de arriba
+        elif pelota_y < raqueta1_y and raqueta1_y - pelota_y   < radio_pelota:
+            velocidad_pelota_x = -velocidad_pelota_x
+            velocidad_pelota_y = -velocidad_pelota_y
+            # esquina de abajo
+        elif pelota_y > raqueta1_y and pelota_y - raqueta1_y   < radio_pelota:
+            velocidad_pelota_x = -velocidad_pelota_x
+            velocidad_pelota_y = -velocidad_pelota_y
+    
     if pelota_x < radio_pelota:  # hemos perdido
         # TODO: sonido perder
         pelota_centro()
         puntos_jugador2 += 1
         print(f'Jugador 1: {puntos_jugador1} - Jugador 2: {puntos_jugador2}')
-        # TODO: mostrar puntos dibujados en pantalla
-        reproducir_sonido('sonido-punto.mp3')
+
+        reproducir_sonido(SONIDO_PUNTO)
         sleep(2)
 
     if pelota_x > ancho_pantalla - (raqueta_ancho + radio_pelota):
         if raqueta2_y < pelota_y < raqueta2_y + raqueta_alto: # rebota en la raqueta
             velocidad_pelota_x = -velocidad_pelota_x
-            reproducir_sonido('boing-raqueta.mp3') # TODO: definir variables nombres de sonidos
+            reproducir_sonido(SONIDO_REBOTE_RAQUETA) 
     if pelota_x > ancho_pantalla - radio_pelota:  # hemos perdido
         # TODO: sonido perder
         pelota_centro()
         puntos_jugador1 += 1
         print(f'Jugador 1: {puntos_jugador1} - Jugador 2: {puntos_jugador2}')
-        # TODO: mostrar puntos dibujados
-        reproducir_sonido('sonido-punto.mp3')
+
+        reproducir_sonido(SONIDO_PUNTO)
         sleep(2)
             
     # dibujo la pantalla
     pantalla.fill(BLACK)  # rellenamos el fondo de la pantalla de negro
     
-    draw.circle(pantalla, PURPLE, (pelota_x, pelota_y), radio_pelota)
-    draw.rect(pantalla, RED, (raqueta1_x, raqueta1_y, raqueta_ancho, raqueta_alto) )
-    draw.rect(pantalla, GREEN, (raqueta2_x, raqueta2_y, raqueta_ancho, raqueta_alto) )
+    
+    draw.rect(pantalla, WHITE, (ancho_pantalla // 2, 0, 10, alto_pantalla))
+    
+    draw.circle(pantalla, COLOR_BALL, (pelota_x, pelota_y), radio_pelota)
+    draw.rect(pantalla, COLOR_PLAYER1 , (raqueta1_x, raqueta1_y, raqueta_ancho, raqueta_alto) )
+    draw.rect(pantalla, COLOR_PLAYER2, (raqueta2_x, raqueta2_y, raqueta_ancho, raqueta_alto) )
+
+    draw_text(pantalla, f'Player 1  {puntos_jugador1}', 30, ancho_pantalla // 6, FONT_SIZE*2//3, COLOR_PLAYER1, font_name = FUENTE_JUGADOR1)
+    draw_text(pantalla, f'Player 2  {puntos_jugador2}', 30, ancho_pantalla * 3 // 5, FONT_SIZE, COLOR_PLAYER2, font_name = FUENTE_JUGADOR2)
     
     display.flip() # actualizamos la pantalla
-    clock.tick(60)
+    clock.tick(120)
     
 quit() # cerramos pygame
 print('Adiós')
