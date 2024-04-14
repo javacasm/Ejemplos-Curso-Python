@@ -54,7 +54,7 @@ def show_menu(pantalla, clock):
                     elif opcion_seleccionada == 5:
                         bMenu=False # Jugamos
                     elif opcion_seleccionada == 6:
-                        quit()
+                        quit() # pygame quit
                         exit()
                    
         # dibujando menú

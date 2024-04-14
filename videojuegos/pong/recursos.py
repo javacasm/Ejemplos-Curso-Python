@@ -17,7 +17,7 @@ icono_2_jugadores = image.load(CARPETA_IMAGENES + ICONO_2_JUGADORES)
 
 iconos_n_jugadores_originales = [icono_0_jugadores, icono_1_jugador, icono_2_jugadores]
 
-# Rescalamos las imágenes a 96x96
+# Rescalamos las imágenes a 96x96 https://stackoverflow.com/questions/43046376/how-to-change-an-image-size-in-pygame
 iconos_n_jugadores = []
 for icono in iconos_n_jugadores_originales:
     icono_resize = transform.scale(icono, (ICONOS_SIZE, ICONOS_SIZE))
