@@ -8,7 +8,7 @@ from config import *
 from utiles import draw_text, reproducir_sonido
 from recursos import *
 
-v = 1.7
+v = 1.8
 
 print(f'{__name__} v{v}')
 
@@ -66,8 +66,11 @@ def pelota_centro():
         velocidad_pelota_x = randint(0, velocidad_paleta)
         velocidad_pelota_y = randint(-velocidad_paleta, velocidad_paleta)    
 
+indice_animacion_pelota = 1
+frame_por_animacion = 10
 def dibuja_pantalla(pantalla):
     # global pelota_x, pelota_y, bPausa
+    global indice_animacion_pelota
     
     # dibujo la pantalla
     #pantalla.fill(BLACK)  # rellenamos el fondo de la pantalla de negro
@@ -83,10 +86,18 @@ def dibuja_pantalla(pantalla):
     draw.rect(pantalla, WHITE, (ancho_pantalla // 2, 0, 10, alto_pantalla))
     
     # pelota
-    draw.circle(pantalla, COLOR_BALL, (pelota_x, pelota_y), radio_pelota)
+    #draw.circle(pantalla, COLOR_BALL, (pelota_x, pelota_y), radio_pelota)
     
+    y_animacion = ICONO_PELOTA_SIZE*(indice_animacion_pelota//frame_por_animacion)
+    pantalla.blit(iconos_pelota, (pelota_x,pelota_y), (0,y_animacion,ICONO_PELOTA_SIZE,ICONO_PELOTA_SIZE))
+
+    indice_animacion_pelota+=1
+    
+    if indice_animacion_pelota > frame_por_animacion * ICONO_PELOTA_NUMERO_FRAMES:
+        indice_animacion_pelota = 0
+
     # raquetas
-    #draw.rect(pantalla, COLOR_PLAYER1 , (raqueta1_x, raqueta1_y, raqueta_ancho, raqueta_alto) )
+    #draw.rect(pantalla, COLOR_PLAYER1 , (raqueta1_x, raqueta)1_y, raqueta_ancho, raqueta_alto) )
     pantalla.blit(icono_raqueta1,(raqueta1_x,raqueta1_y))
     #draw.rect(pantalla, COLOR_PLAYER2, (raqueta2_x, raqueta2_y, raqueta_ancho, raqueta_alto) )
     pantalla.blit(icono_raqueta2,(raqueta2_x,raqueta2_y))

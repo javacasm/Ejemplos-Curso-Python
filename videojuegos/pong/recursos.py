@@ -43,5 +43,9 @@ icono_dificultad_pesadilla = image.load(CARPETA_IMAGENES + ICONO_NIVEL_PESADILLA
 iconos_dificultad_originales = [icono_dificultad_facil,icono_dificultad_dificil,icono_dificultad_pesadilla]
 iconos_dificultad = escala_iconos(iconos_dificultad_originales)
 
-fondo = image.load(CARPETA_IMAGENES + FONDO1)
+iconos_pelota_original = image.load(CARPETA_IMAGENES + ICONOS_PELOTA)
 
+iconos_pelota = transform.scale(iconos_pelota_original, (ICONO_PELOTA_SIZE, ICONO_PELOTA_SIZE*ICONO_PELOTA_NUMERO_FRAMES))
+
+fondo_original = image.load(CARPETA_IMAGENES + FONDO1)
+fondo = transform.scale(fondo_original, (ancho_pantalla, alto_pantalla))

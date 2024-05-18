@@ -6,7 +6,7 @@ from config import *
 from menu import show_menu
 import game 
 
-v = 1.7
+v = 1.8
 
 print(f'{__name__} v{v}')
 
@@ -14,7 +14,7 @@ init() # inicializamos pygame
 
 pantalla = display.set_mode( (ancho_pantalla, alto_pantalla) )
 
-display.set_caption('myPong v{v}')
+display.set_caption(f'myPong v{v}')
 
 clock = time.Clock()
 

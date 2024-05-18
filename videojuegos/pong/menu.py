@@ -39,12 +39,10 @@ def dibuja_menu_simple(pantalla):
     pantalla.blit(iconos_dificultad[opciones[CONFIG_LEVEL]], (ancho_pantalla*4//7, alto_pantalla-ICONOS_SIZE-5))
 
     display.flip()
-    
-
-    
+     
 def gestiona_eventos():
     global bMenu
-    global opciones_visuales
+    # global opciones_visuales
     global opcion_seleccionada
     
     for evento in event.get():

@@ -51,7 +51,11 @@ ICONO_NIVEL_FACIL = 'happy_4951994.png'
 ICONO_NIVEL_DIFICIL = 'grimacing_4955392.png'
 ICONO_NIVEL_PESADILLA = 'sweating_1094605.png'
 
-FONDO1 = 'fondo1.png'
+ICONOS_PELOTA = 'pelotas.png' # 'balls.png'
+ICONO_PELOTA_NUMERO_FRAMES = 8
+ICONO_PELOTA_SIZE = 32
+
+FONDO1 = 'fiesta-halloween.jpg' # fondo1.png'
 
 # fuentes de Dafont: https://www.dafont.com/
 # paleta en https://htmlcolorcodes.com/es/
