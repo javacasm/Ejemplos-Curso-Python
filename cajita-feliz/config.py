@@ -7,7 +7,7 @@ print(f'{__name__} v{v}')
 
 # ficheros
 CARPETA_DATOS  = 'datos'
-
+CARPETA_IMAGENES = 'imagenes' + os.sep
 FICHERO_ARTICULOS = CARPETA_DATOS + os.sep + 'articulos.data'
 
 
