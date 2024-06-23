@@ -10,11 +10,14 @@ print(f'{__name__} v{v}')
 
 class Articulo():
     
-    def __init__(self, nombre, categoria, precio):
+    def __init__(self, nombre, categoria, precio, imagen):
         
         self.nombre = nombre
         self.categoria = categoria
         self.precio = precio
+        self.imagen = CARPETA_IMAGENES + imagen
+        if not os.path.exists(self.imagen):
+            print(f'No se ha encontrado el fichero {self.imagen}')
         
 class Pedido():
     
@@ -66,12 +69,12 @@ class caja_amiga():
             log(f'Cargados {len(self.articulos)} artículos')
         else:
             log('Creando artículos "a mano"')
-            self.add_articulo(Articulo('Patata','verdura',1.4))
-            self.add_articulo(Articulo('Leche','lacteo',1))
-            self.add_articulo(Articulo('Yogurt','lacteo',0.8))
-            self.add_articulo(Articulo('Galleta', 'bolleria', 0.6))
-            self.add_articulo(Articulo('Nestea', 'refrescos', 1.5))
-            self.add_articulo(Articulo('Tomate','verdura',1.6))
+            self.add_articulo(Articulo('Patata','verdura',1.4,'patata.png'))
+            self.add_articulo(Articulo('Leche','lacteo',1,'leche.png'))
+            self.add_articulo(Articulo('Yogurt','lacteo',0.8,'yogurt.png'))
+            self.add_articulo(Articulo('Galleta', 'bolleria', 0.6,'galletas.png'))
+            self.add_articulo(Articulo('Nestea', 'refrescos', 1.5,'nestea.png'))
+            self.add_articulo(Articulo('Tomate','verdura',1.6,'tomate.png'))
             self.guarda_articulos()
 
 
